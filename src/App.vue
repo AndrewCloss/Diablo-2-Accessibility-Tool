@@ -265,8 +265,8 @@ export default {
           .then(function (zip) {
         try {
             zip.file("config.json", JSON.stringify(self.config))
-            /* let ahkBuild = ahkBuilder(self.config.maps, self.config.defaultLeftClick, self.config.defaultRightClick, self.config.defaultWeaponSwap) */
-            let ahkBuild = ahkBuilder(self.config.maps)
+            let ahkBuild = ahkBuilder(self.config.maps, self.config.defaultLeftClick, self.config.defaultRightClick, self.config.defaultWeaponSwap)
+            /* let ahkBuild = ahkBuilder(self.config.maps) */
             if (!ahkBuild) throw 'Failed.'
             zip.file("diablo-2-accessibility-tool.ahk", ahkBuild)
 
