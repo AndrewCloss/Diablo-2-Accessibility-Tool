@@ -6,7 +6,9 @@
 
     <div class="row mb-2">
       <div class="col pl-0 pr-1">
-        <b-card class="h-100">
+        <b-card class="h-100" no-body>
+          <b-tabs card>
+            <b-tab title="Overview">
             <p>This is an open-source macro for <a href="https://www.autohotkey.com/">AutoHotKey</a> designed for:
 
             <ul>
@@ -17,7 +19,7 @@
 
             <p>This <strong>does not</strong> inject into the game instance or alter files, it only interacts with your keyboard.</p>
 
-            <p>By default, every skill in Diablo II must be swapped to the active spell slot and then casted via mouse click.</p>
+            <p>Before the Diablo 2 Accessibility Tool, every skill had to be swapped to the active spell slot and then casted via mouse click.</p>
             <p><strong>Features</strong></p>
             <ul>
               <li>All actions are reduced to one button, including:
@@ -31,6 +33,16 @@
                 Casting can alert you when buffs end with a sound effect
               </li>
             </ul>
+          </b-tab>
+          <b-tab title="FAQ">
+            <ul>
+              <li class="pb-5">Instructions to run a AutoHotKey macro are covered <a href="https://letmegooglethat.com/?q=how+to+run+autohotkey+script">elsewhere on the web.</a></li>
+              <li class="pb-5">The auto attack-move works significantly better than Vanilla, as it's mimicing CTRL+Left click thousands of times a minute.</li>
+              <li class="pb-5">The default left click, default right click and weapon swap are required to generate the script, however they don't have to be bound in-game.</li>
+              <li class="pb-5">See the source code at <a href="https://github.com/AndrewCloss/Diablo-2-Accessibility-Tool">https://github.com/AndrewCloss/Diablo-2-Accessibility-Tool</a></li>
+            </ul>
+          </b-tab>
+          </b-tabs>
         </b-card>
       </div>
 
@@ -38,7 +50,7 @@
         <b-card class="mb-2">
           <iframe width="560" height="315" src="https://www.youtube.com/embed/3Rp2FSW45zo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </b-card>
-        <b-card>
+        <b-card class="pb-5">
           <div class="row">
             <div class="col">
             <label class="form-label" for="uploader">Upload your existing config.json</label>
@@ -175,7 +187,7 @@ import JSZip, { loadAsync } from "jszip"
 import JSZipUtils from "jszip-utils"
 import ahkBuilder from "./ahkBuilder.js"
 import { saveAs } from 'file-saver'
-import { BCard, BFormSelect, BFormSelectOption } from 'bootstrap-vue'
+import { BTab, BTabs, BCard, BFormSelect, BFormSelectOption } from 'bootstrap-vue'
 
 /*
 TODO:
@@ -189,6 +201,8 @@ TODO:
 export default {
   name: "App",
   components: {
+    'b-tab': BTab,
+    'b-tabs': BTabs,
     'b-card': BCard,
     'b-form-select': BFormSelect,
     'b-form-select-option': BFormSelectOption,
