@@ -1,21 +1,29 @@
 /* eslint-disable */
 
-export default function init(keysets) {
-  let script = util() 
+export default function init(keysets, defaultLeftClick, defaultRightClick, defaultWeaponSwap) {
+  let script = util(defaultLeftClick, defaultRightClick, defaultWeaponSwap) 
 
-  for (const set of keysets) {
-    script += eval(`${set.type}('${set.key}', '${set.fn}', '${set.sound}', '${set.delay}')`)
+  try {
+    for (const set of keysets) {
+      // script += eval(`${set.type}('${set.key}', '${set.fn}', '${set.sound}', '${set.delay*1000}')`)
+      script += eval(`${set.type}('${set.key}', '${set.key}', '${set.sound}', '${set.delay*1000}')`)
+    }
+  } catch (e) {
+    return false
   }
 
   return script
 }
 
-function quickcast(key, map, sound, delay) {
+function quickcastr(key, map, sound, delay) {
   return `
 ${key}::
-  Send {${map}}
   while ( GetKeyState("${key}" , "P") )
+  {
+    Send {${map}}
+    Sleep, %hotkeyDelay%
     Click down right
+  }
   Click up right
   Send %defaultRightClick%
   ${(sound != 'null' && delay != 'null') ? 
@@ -30,7 +38,9 @@ ${key}::
   send {${map}}
   send {ctrl down}
   while ( getkeystate("${key}" , "P") )
+  {
     click down left
+  }
   click up left
   send {ctrl up}}
   send %defaultleftclick%
@@ -40,13 +50,16 @@ return
 `
 }
 
-function leftmimicsright() {
+function quickcastl(key, map, sound, delay) {
   return `
 ${key}::
-  Send {${map}}
   Send {Shift Down}
   while ( GetKeyState("${key}" , "P") )
+  {
+    Send {${map}}
+    Sleep, %hotkeyDelay%
     Click down left
+  }
   Click up left
   Send {Shift Up}}
   Send %defaultLeftClick%
@@ -56,24 +69,37 @@ return
 `
 }
 
-function swapcast() {
+function swapcast(key, map, sound, delay) {
   return `
 ${key}::
-  if ( not GetKeyState("${key}" , "P") )
-    Sleep, ${hotkeyDelay}
-    Send %defaultWeaponSwap%
-    Send {${key}}
-    Click down right
-    Click up right
-    Sleep, %weaponSwapDelay%
-    Send %defaultWeaponSwap%
-    ${(sound != 'null' && delay != 'null') ? 
-    `QueueSound(${delay}, ${sound})` : ``}
+  continueWalk = 0
+  if (GetKeyState("LButton", "P"))
+  {
+    continueWalk = 1
+  }
+  BlockKeyboard("On")
+  Send %defaultWeaponSwap%
+  Sleep, 100
+  Send {${map}}
+  Sleep, 100
+  Click down right
+  Sleep, 100
+  Click up right
+  Sleep, %weaponSwapDelay%
+  Send %defaultWeaponSwap%
+  BlockKeyboard("Off")
+  If (continueWalk = 1)
+  {
+    click down left
+    click up left
+  }
+  ${(sound != 'null' && delay != 'null') ? 
+  `QueueSound(${delay}, ${sound})` : ``}
 return
 `
 }
 
-function util() {
+function util(defaultLeftClick, defaultRightClick, defaultWeaponSwap) {
   return `
 ; ============================================================================
 ; INITIALIZATION
@@ -83,11 +109,11 @@ function util() {
 SendMode Input             ; improves reliability
 #IfWinActive, Diablo II    ; suspend outside of client
 
-defaultRightClick = {F9}
-defaultLeftClick  = {F10}
-defaultWeaponSwap = {F11}
+defaultLeftClick  = {${defaultLeftClick}}
+defaultRightClick = {${defaultRightClick}}
+defaultWeaponSwap = {${defaultWeaponSwap}}
 hotkeyDelay       := 1     ; in milliseconds
-weaponSwapDelay   := 500   ; in milliseconds
+weaponSwapDelay   := 750   ; in milliseconds
 
 ; Sounds supported by default (%A_ScriptDir% the path to this file)
 mk_toasty            = %A_ScriptDir%\\Media\\mk_toasty.mp3 
@@ -123,46 +149,21 @@ TriggerSound(a) {
    SoundPlay, % a
 }
 
+BlockKeyboard(state){
+    Loop, 512
+    {
+        Key := Format("SC{:X}",A_Index)
+        If (state = "On")
+            Hotkey, *%Key%, KeyboardKey, On UseErrorLevel
+        else
+            Hotkey, *%Key%, KeyboardKey, Off UseErrorLevel
+    }
+    KeyboardKey:
+    return
+}
 ; ============================================================================
 ; KEYBINDINGS
 ; ============================================================================
 `
 }
-
-let stuff = [
-  {
-    type: 'quickcast', 
-    key: 'Q', 
-    map: 'F1', 
-    sound: 'mk_toasty', 
-    delay: '420'
-  },
-  {
-    type: 'quickcast', 
-    key: 'W', 
-    map: 'F2', 
-    sound: 'mk_teleport', 
-    delay: '100'
-  },
-]
-
-// console.log(init(stuff))
-// init(stuff)
-// console.log(lookupSound('mk_brutality'))
-
-// function lookupSound(keyword)  {
-//   return {
-//     mk_toasty: '%A_ScriptDir%\\Media\\mk_toasty.mp3',
-//     mk_testyourmight: '%A_ScriptDir%\\Media\\mk_testyourmight.mp3',
-//     mk_dundundun: '%A_ScriptDir%\\Media\\mk_dundundun.mp3',
-//     mk_playerselect: '%A_ScriptDir%\\Media\\mk_playerselect.mp3',
-//     mk_yellmortalkombat: '%A_ScriptDir%\\Media\\mk_yellmortalkombat.mp3',
-//     mk_teleport: '%A_ScriptDir%\\Media\\mk_teleport.mp3',
-//     mk_finishhim: '%A_ScriptDir%\\Media\\mk_finishhim.mp3',
-//     mk_flawlessvictory: '%A_ScriptDir%\\Media\\mk_flawlessvictory.mp3',
-//     mk_babality: '%A_ScriptDir%\\Media\\mk_babality.mp3',
-//     mk_animality: '%A_ScriptDir%\\Media\\mk_animality.mp3',
-//     mk_brutality: '%A_ScriptDir%\\Media\\mk_brutality.mp3',
-//   }[keyword] || keyword
-// }
 
