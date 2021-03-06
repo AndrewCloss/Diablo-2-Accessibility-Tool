@@ -36,7 +36,7 @@
 
       <div class="col pl-1 pr-0">
         <b-card class="mb-2">
-          <iframe width="560" height="315" src="https://www.youtube.com/embed/PgUBW30Zdng" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          <iframe width="560" height="315" src="https://www.youtube.com/embed/3Rp2FSW45zo" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </b-card>
         <b-card>
           <div class="row">
