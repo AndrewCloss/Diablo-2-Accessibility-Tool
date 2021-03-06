@@ -1,3 +1,3 @@
 module.exports = {
-  publicPath: '/project name/'
+  publicPath: '/Diablo-2-Accessibility-Tool/'
 }
