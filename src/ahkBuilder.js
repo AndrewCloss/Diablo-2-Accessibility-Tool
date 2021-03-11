@@ -17,18 +17,17 @@ export default function init(keysets, defaultLeftClick, defaultRightClick, defau
 
 function quickcastr(key, map, sound, delay) {
   return `
-${key}::
-  while ( GetKeyState("${key}" , "P") )
-  {
-    Send {${map}}
-    Sleep, %hotkeyDelay%
-    Click down right
-  }
+~${key}::
+  Send {${key}}
+  Click down right
+  return
+
+~${key} up::
   Click up right
   Send %defaultRightClick%
   ${(sound != 'null' && delay != 'null') ? 
   `QueueSound(${delay}, ${sound})` : ``}
-return
+  return
 `
 }
 
@@ -42,7 +41,7 @@ ${key}::
     click down left
   }
   click up left
-  send {ctrl up}}
+  send {ctrl up}
   send %defaultleftclick%
   ${(sound != 'null' && delay != 'null') ? 
   `QueueSound(${delay}, ${sound})` : ``}
@@ -52,20 +51,19 @@ return
 
 function quickcastl(key, map, sound, delay) {
   return `
-${key}::
+~${key}::
+  Send {${key}}
   Send {Shift Down}
-  while ( GetKeyState("${key}" , "P") )
-  {
-    Send {${map}}
-    Sleep, %hotkeyDelay%
-    Click down left
-  }
+  Click down left
+  return
+
+~${key} up::
   Click up left
   Send {Shift Up}}
   Send %defaultLeftClick%
   ${(sound != 'null' && delay != 'null') ? 
   `QueueSound(${delay}, ${sound})` : ``}
-return
+  return
 `
 }
 
