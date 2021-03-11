@@ -59,7 +59,7 @@ function quickcastl(key, map, sound, delay) {
 
 ~${key} up::
   Click up left
-  Send {Shift Up}}
+  Send {Shift Up}
   Send %defaultLeftClick%
   ${(sound != 'null' && delay != 'null') ? 
   `QueueSound(${delay}, ${sound})` : ``}
