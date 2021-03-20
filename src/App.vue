@@ -2,7 +2,7 @@
 <div>
 
   <div class="container">
-    <h1 class="text-center">Diablo II Accessibility Tool</h1>
+    <h1 class="text-center">Diablo II Accessibility Tool v1.1</h1>
 
     <div class="row mb-2">
       <div class="col pl-0 pr-1">
