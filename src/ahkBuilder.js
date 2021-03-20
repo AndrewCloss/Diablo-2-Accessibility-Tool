@@ -26,8 +26,14 @@ function quickcastr(key, map, sound, delay) {
   Click up right
   Send %defaultRightClick%
   ${(sound != 'null' && delay != 'null') ? 
-  `QueueSound(${delay}, ${sound})` : ``}
+  `SetTimer, Queue_${key}, -${delay}
   return
+
+Queue_${key}:
+  TriggerSound(${sound})
+  return
+` : `return`}
+
 `
 }
 
@@ -44,8 +50,14 @@ ${key}::
   send {ctrl up}
   send %defaultleftclick%
   ${(sound != 'null' && delay != 'null') ? 
-  `QueueSound(${delay}, ${sound})` : ``}
-return
+  `SetTimer, Queue_${key}, -${delay}
+  return
+
+Queue_${key}:
+  TriggerSound(${sound})
+  return
+` : `return`}
+
 `
 }
 
@@ -62,8 +74,14 @@ function quickcastl(key, map, sound, delay) {
   Send {Shift Up}
   Send %defaultLeftClick%
   ${(sound != 'null' && delay != 'null') ? 
-  `QueueSound(${delay}, ${sound})` : ``}
+  `SetTimer, Queue_${key}, -${delay}
   return
+
+Queue_${key}:
+  TriggerSound(${sound})
+  return
+` : `return`}
+
 `
 }
 
@@ -92,8 +110,14 @@ ${key}::
     click up left
   }
   ${(sound != 'null' && delay != 'null') ? 
-  `QueueSound(${delay}, ${sound})` : ``}
-return
+  `SetTimer, Queue_${key}, -${delay}
+  return
+
+Queue_${key}:
+  TriggerSound(${sound})
+  return
+` : `return`}
+
 `
 }
 
@@ -138,10 +162,10 @@ Escape::
    Send {Escape}
 return
 
-QueueSound(delay, soundFile) {
-   fn := Func("TriggerSound").Bind(soundFile)
-   SetTimer, %fn%, -%delay%
-}
+; QueueSound(delay, soundFile) {
+;    fn := Func("TriggerSound").Bind(soundFile)
+;    SetTimer, %fn%, -%delay%
+; }
 
 TriggerSound(a) {
    SoundPlay, % a
