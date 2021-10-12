@@ -18,7 +18,7 @@ export default function init(keysets, defaultLeftClick, defaultRightClick, defau
 function quickcastr(key, map, sound, delay) {
   return `
 ~${key}::
-  Send {${key}}
+  Send {${map}}
   Click down right
   return
 
@@ -64,7 +64,7 @@ Queue_${key}:
 function quickcastl(key, map, sound, delay) {
   return `
 ~${key}::
-  Send {${key}}
+  Send {${map}}
   Send {Shift Down}
   Click down left
   return
